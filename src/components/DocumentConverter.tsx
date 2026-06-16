@@ -786,11 +786,7 @@ Extract all items into the \`data\` array matching this exact vocabulary schema:
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (logTimeoutRef.current) clearTimeout(logTimeoutRef.current);
-    };
-  }, []);
+   // Removed broken useEffect
 
   // Auto-scanning active cached session on mount
   useEffect(() => {

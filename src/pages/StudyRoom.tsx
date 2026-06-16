@@ -2636,7 +2636,7 @@ export default function StudyRoom() {
             <motion.div
               className="w-full h-full transform-style-3d rounded-3xl"
               animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={isEcoMode ? { duration: 0 } : {
+              transition={isFixLagEnabled ? { duration: 0 } : {
                 type: "spring",
                 stiffness: 220,
                 damping: 25,

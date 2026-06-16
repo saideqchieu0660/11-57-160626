@@ -1608,12 +1608,12 @@ Acknowledge this protocol. Execute all text transformations deterministically at
   return (
     <section
       style={
-        isEcoMode
+        isFixLagEnabled
           ? { transform: "translateZ(0)", willChange: "transform" }
           : undefined
       }
       className={cn(
-        isEcoMode
+        isFixLagEnabled
           ? "p-6 md:p-8 rounded-2xl border-2 border-zinc-400 dark:border-zinc-800 bg-white dark:bg-black relative mt-8 max-w-4xl mx-auto shadow-none backdrop-blur-none transition-none duration-0"
           : "glass p-6 md:p-8 rounded-2xl border border-blue-500/10 dark:border-blue-400/10 shadow-lg relative overflow-hidden mt-8 max-w-4xl mx-auto",
       )}
@@ -1636,7 +1636,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
           onClick={() => setShowToolModal(true)}
           className={cn(
             "shrink-0 flex items-center justify-center gap-2 text-white font-bold py-3.5 px-6 rounded-xl border border-transparent",
-            isEcoMode
+            isFixLagEnabled
               ? "bg-blue-600 hover:bg-blue-700 border-blue-700 font-extrabold shadow-none transition-none duration-0"
               : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition shadow-lg shadow-blue-500/25 active:scale-95",
           )}
@@ -1685,7 +1685,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
         <div
           className={cn(
             "mb-6 p-4 rounded-xl text-base font-bold flex items-center gap-3 border shadow-none",
-            isEcoMode
+            isFixLagEnabled
               ? "bg-emerald-600 dark:bg-emerald-700 text-white border-emerald-700 transition-none animate-none duration-0"
               : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 animate-in zoom-in-95 duration-200",
           )}
@@ -1702,13 +1702,13 @@ Acknowledge this protocol. Execute all text transformations deterministically at
       {activeTab === "automated" ? (
         <div
           style={
-            isEcoMode
+            isFixLagEnabled
               ? { transform: "translateZ(0)", willChange: "transform" }
               : undefined
           }
           className={cn(
             "space-y-6",
-            isEcoMode
+            isFixLagEnabled
               ? "transition-none animate-none duration-0"
               : "animate-in fade-in duration-350",
           )}
@@ -1839,7 +1839,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
             <div
               className={cn(
                 "p-4 rounded-xl space-y-3 border shadow-none",
-                isEcoMode
+                isFixLagEnabled
                   ? "bg-orange-600 dark:bg-orange-700 text-white border-orange-700 transition-none animate-none duration-0"
                   : "bg-orange-500/10 border border-orange-500/20 animate-in fade-in duration-350",
               )}
@@ -1849,7 +1849,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   <h5
                     className={cn(
                       "font-bold flex items-center gap-2 text-base",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "text-white"
                         : "text-orange-700 dark:text-orange-400",
                     )}
@@ -1857,7 +1857,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     <AlertTriangle
                       className={cn(
                         "w-5 h-5",
-                        isEcoMode
+                        isFixLagEnabled
                           ? "text-white"
                           : "text-orange-500 animate-pulse",
                       )}
@@ -1867,7 +1867,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   <p
                     className={cn(
                       "text-sm font-medium mt-1",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "text-white"
                         : "text-slate-900 dark:text-zinc-200",
                     )}
@@ -1885,7 +1885,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     disabled={isAutomating}
                     className={cn(
                       "bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm disabled:opacity-50",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "border border-orange-700 shadow-none transition-none animate-none duration-0"
                         : "transition active:scale-95 animate-pulse",
                     )}
@@ -1921,7 +1921,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
           {autoProgress && (
             <div
               style={
-                isEcoMode
+                isFixLagEnabled
                   ? { transform: "translateZ(0)", willChange: "transform" }
                   : undefined
               }
@@ -1933,7 +1933,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     <Terminal
                       className={cn(
                         "w-4 h-4 text-blue-500",
-                        !isEcoMode && "animate-pulse",
+                        !isFixLagEnabled && "animate-pulse",
                       )}
                     />{" "}
                     Trạng thái Hàng đợi AI
@@ -1966,7 +1966,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               </div>
               <div
                 style={
-                  isEcoMode
+                  isFixLagEnabled
                     ? { transform: "translateZ(0)", willChange: "transform" }
                     : undefined
                 }
@@ -1993,7 +1993,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   <div
                     className={cn(
                       "h-full rounded-full",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "bg-blue-600 transition-none duration-0"
                         : "bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300",
                     )}
@@ -2253,7 +2253,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               }
               className={cn(
                 "flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed",
-                isEcoMode
+                isFixLagEnabled
                   ? "shadow-none transition-none duration-0"
                   : "transition shadow-lg shadow-blue-500/10",
               )}
@@ -2261,7 +2261,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               {isAutomating ? (
                 <>
                   <RefreshCw
-                    className={cn("w-5 h-5", !isEcoMode && "animate-spin")}
+                    className={cn("w-5 h-5", !isFixLagEnabled && "animate-spin")}
                   />{" "}
                   Đang Chạy Pipeline (
                   {autoProgress
@@ -2282,7 +2282,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                 onClick={handleCancelAutomatedPipeline}
                 className={cn(
                   "px-6 bg-red-650 hover:bg-red-700 text-white font-extrabold rounded-xl transition duration-200 transform active:scale-95 flex items-center justify-center gap-2 border-2 border-red-500 shadow-md shadow-red-500/20 py-4",
-                  isEcoMode
+                  isFixLagEnabled
                     ? "bg-red-700 text-white shadow-none"
                     : "hover:shadow-lg animate-pulse",
                 )}
@@ -2296,13 +2296,13 @@ Acknowledge this protocol. Execute all text transformations deterministically at
           {autoCreatedCards.length > 0 && (
             <div
               style={
-                isEcoMode
+                isFixLagEnabled
                   ? { transform: "translateZ(0)", willChange: "transform" }
                   : undefined
               }
               className={cn(
                 "p-4 border rounded-xl space-y-3 mt-4 shadow-none",
-                isEcoMode
+                isFixLagEnabled
                   ? "bg-white dark:bg-black border-zinc-400 dark:border-zinc-800 transition-none duration-0"
                   : "bg-zinc-100/40 dark:bg-zinc-950/40 border-zinc-200/50 dark:border-zinc-800/80 animate-in fade-in duration-300",
               )}
@@ -2311,13 +2311,13 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                 <span
                   className={cn(
                     "flex items-center gap-2 font-bold text-sm",
-                    isEcoMode
+                    isFixLagEnabled
                       ? "text-emerald-600 dark:text-emerald-450"
                       : "text-emerald-600 dark:text-emerald-450",
                   )}
                 >
                   <Check
-                    className={cn("w-5 h-5", !isEcoMode && "animate-bounce")}
+                    className={cn("w-5 h-5", !isFixLagEnabled && "animate-bounce")}
                   />{" "}
                   Các Thẻ Đã Tạo Thành Công ({autoCreatedCards.length} Thẻ)
                 </span>
@@ -2336,7 +2336,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
 
               <div
                 style={
-                  isEcoMode
+                  isFixLagEnabled
                     ? { transform: "translateZ(0)", willChange: "transform" }
                     : undefined
                 }
@@ -2347,7 +2347,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     key={c.id || index}
                     className={cn(
                       "p-3 bg-white dark:bg-zinc-900 rounded-lg border relative group",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "bg-white dark:bg-black border-zinc-400 dark:border-zinc-800 shadow-none transition-none duration-0"
                         : "border-zinc-250/50 dark:border-zinc-800/80 hover:border-blue-500 dark:hover:border-blue-400/50 transition",
                     )}
@@ -2407,7 +2407,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     disabled={retryAllLoading || processingErrorIndex !== null}
                     className={cn(
                       "text-xs bg-orange-600 hover:bg-orange-700 text-white font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 disabled:opacity-50",
-                      !isEcoMode && "transition active:scale-95 duration-150",
+                      !isFixLagEnabled && "transition active:scale-95 duration-150",
                     )}
                   >
                     {retryAllLoading ? (
@@ -2436,7 +2436,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     }}
                     className={cn(
                       "text-xs bg-red-650 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-lg",
-                      !isEcoMode && "transition active:scale-95",
+                      !isFixLagEnabled && "transition active:scale-95",
                     )}
                   >
                     Tải Xuống JSON Lỗi
@@ -2455,7 +2455,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                       key={idx}
                       className={cn(
                         "p-3 bg-red-550/5 dark:bg-black/40 rounded-lg border border-red-500/10 space-y-2 relative group",
-                        !isEcoMode &&
+                        !isFixLagEnabled &&
                           "hover:bg-red-500/10 transition duration-150",
                       )}
                     >
@@ -2552,13 +2552,13 @@ Acknowledge this protocol. Execute all text transformations deterministically at
       ) : (
         <div
           style={
-            isEcoMode
+            isFixLagEnabled
               ? { transform: "translateZ(0)", willChange: "transform" }
               : undefined
           }
           className={cn(
             "space-y-6",
-            isEcoMode
+            isFixLagEnabled
               ? "transition-none animate-none duration-0"
               : "animate-in fade-in duration-300",
           )}
@@ -2712,7 +2712,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                       onClick={() => setShowNormalize(!showNormalize)}
                       className={cn(
                         "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 font-bold px-3 py-1.5 rounded-lg border flex items-center gap-1.5",
-                        isEcoMode
+                        isFixLagEnabled
                           ? "border-blue-500 bg-white dark:bg-black shadow-none transition-none duration-0"
                           : "border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20 transition",
                       )}
@@ -2725,7 +2725,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                       <div
                         className={cn(
                           "flex flex-wrap items-center gap-2 p-3 rounded-xl border",
-                          isEcoMode
+                          isFixLagEnabled
                             ? "bg-white dark:bg-zinc-950 border-zinc-400 dark:border-zinc-800 transition-none animate-none duration-0"
                             : "bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 animate-in fade-in slide-in-from-top-1 duration-200",
                         )}
@@ -2741,7 +2741,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                           }}
                           className={cn(
                             "flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold",
-                            isEcoMode
+                            isFixLagEnabled
                               ? "transition-none shadow-none font-extrabold duration-0"
                               : "transition",
                           )}
@@ -2768,7 +2768,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     onClick={() => jsonFileInputRef.current?.click()}
                     className={cn(
                       "border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "bg-white dark:bg-black border-zinc-400 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-none transition-none duration-0"
                         : "border-zinc-300 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 hover:bg-zinc-50 dark:hover:bg-zinc-950/40 hover:border-blue-500 dark:hover:border-blue-500/50 transition duration-200 animate-in fade-in",
                     )}
@@ -2807,7 +2807,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                         <FileUp
                           className={cn(
                             "w-10 h-15 text-blue-500/80",
-                            !isEcoMode && "animate-pulse",
+                            !isFixLagEnabled && "animate-pulse",
                           )}
                         />
                         <p className="text-base font-bold text-zinc-700 dark:text-zinc-300">
@@ -2850,7 +2850,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                       disabled={!jsonInput.trim() || isAiParsingJson}
                       className={cn(
                         "w-full flex items-center justify-center gap-2 text-white font-bold py-4 px-6 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed",
-                        isEcoMode
+                        isFixLagEnabled
                           ? "bg-blue-600 hover:bg-blue-700 shadow-none transition-none duration-0"
                           : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition shadow-lg shadow-blue-500/10",
                       )}
@@ -2860,7 +2860,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                           <Loader2
                             className={cn(
                               "w-5 h-5",
-                              !isEcoMode && "animate-spin",
+                              !isFixLagEnabled && "animate-spin",
                             )}
                           />{" "}
                           AI Đang Sửa Lỗi Cú Syntax...
@@ -2879,7 +2879,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
           ) : (
             <div
               style={
-                isEcoMode
+                isFixLagEnabled
                   ? { transform: "translateZ(0)", willChange: "transform" }
                   : undefined
               }
@@ -2888,7 +2888,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               <div
                 className={cn(
                   "flex items-center justify-between mt-2",
-                  isEcoMode
+                  isFixLagEnabled
                     ? "transition-none animate-none duration-0"
                     : "animate-in slide-in-from-top-2 duration-300",
                 )}
@@ -2905,7 +2905,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   disabled={isProcessing}
                   className={cn(
                     "text-xs text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded-lg font-semibold",
-                    isEcoMode
+                    isFixLagEnabled
                       ? "transition-none shadow-none text-red-600/90 font-bold duration-0"
                       : "transition",
                   )}
@@ -3037,7 +3037,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
 
               <div
                 style={
-                  isEcoMode
+                  isFixLagEnabled
                     ? { transform: "translateZ(0)", willChange: "transform" }
                     : undefined
                 }
@@ -3048,7 +3048,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     key={card.id}
                     className={cn(
                       "p-4 rounded-xl relative group border shadow-none",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "bg-white dark:bg-black border-zinc-400 dark:border-zinc-850 transition-none duration-0"
                         : "bg-zinc-100/60 dark:bg-zinc-900/60 border-zinc-200/50 dark:border-zinc-800",
                     )}
@@ -3056,7 +3056,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     <div
                       className={cn(
                         "absolute -left-1 -top-1 bg-zinc-800 dark:bg-zinc-200 text-zinc-100 dark:text-zinc-900 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold",
-                        !isEcoMode && "shadow-sm",
+                        !isFixLagEnabled && "shadow-sm",
                       )}
                     >
                       {idx + 1}
@@ -3065,7 +3065,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                       onClick={() => handleDeletePreviewCard(card.id)}
                       className={cn(
                         "absolute top-2 right-2 p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg",
-                        isEcoMode
+                        isFixLagEnabled
                           ? "transition-none shadow-none duration-0"
                           : "transition",
                       )}
@@ -3077,7 +3077,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                         <label
                           className={cn(
                             "text-[10px] uppercase font-bold tracking-wider opacity-50 mb-1 block",
-                            !isEcoMode && "animate-in fade-in",
+                            !isFixLagEnabled && "animate-in fade-in",
                           )}
                         >
                           Front
@@ -3142,7 +3142,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   }
                   className={cn(
                     "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl text-lg flex items-center justify-center gap-2",
-                    isEcoMode
+                    isFixLagEnabled
                       ? "transition-none shadow-none animate-none duration-0"
                       : "transition animate-pulse",
                   )}
@@ -3162,13 +3162,13 @@ Acknowledge this protocol. Execute all text transformations deterministically at
         <div
           className={cn(
             "fixed inset-0 z-50 flex items-center justify-center p-4",
-            isEcoMode ? "bg-black/95 animate-none" : "modal-glass-overlay",
+            isFixLagEnabled ? "bg-black/95 animate-none" : "modal-glass-overlay",
           )}
         >
           <div
             className={cn(
               "w-full max-w-2xl rounded-2xl border overflow-hidden shadow-none",
-              isEcoMode
+              isFixLagEnabled
                 ? "border-zinc-400 dark:border-zinc-800 bg-white dark:bg-black p-2 transition-none duration-0"
                 : "bg-white dark:bg-zinc-900 modal-glass-content border-zinc-200 dark:border-zinc-800 shadow-xl animate-in zoom-in-95 duration-200",
             )}
@@ -3182,7 +3182,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                 onClick={() => setShowToolModal(false)}
                 className={cn(
                   "p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-500",
-                  isEcoMode
+                  isFixLagEnabled
                     ? "transition-none shadow-none duration-0"
                     : "transition",
                 )}
@@ -3195,7 +3195,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               <div
                 className={cn(
                   "p-4 rounded-xl border flex flex-col h-full shadow-none",
-                  isEcoMode
+                  isFixLagEnabled
                     ? "border-indigo-600 bg-indigo-50 dark:bg-indigo-950/25 transition-none duration-0"
                     : "border-indigo-500/20 bg-indigo-50/50 dark:bg-indigo-500/5",
                 )}
@@ -3213,7 +3213,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                   rel="noopener noreferrer"
                   className={cn(
                     "w-full block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg text-sm mb-2",
-                    isEcoMode
+                    isFixLagEnabled
                       ? "transition-none shadow-none font-bold duration-0"
                       : "transition",
                   )}
@@ -3225,7 +3225,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
               <div
                 className={cn(
                   "p-4 rounded-xl border flex flex-col h-full shadow-none",
-                  isEcoMode
+                  isFixLagEnabled
                     ? "border-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition-none duration-0 text-zinc-900 dark:text-zinc-100"
                     : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/20",
                 )}
@@ -3249,7 +3249,7 @@ Acknowledge this protocol. Execute all text transformations deterministically at
                     }}
                     className={cn(
                       "w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm",
-                      isEcoMode
+                      isFixLagEnabled
                         ? "transition-none shadow-none font-extrabold duration-0"
                         : "transition",
                     )}

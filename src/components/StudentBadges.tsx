@@ -507,7 +507,6 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
       >
          {/* FRONT FACE */}
          <div 
-           ref={frontRef}
            className={cn(
              "absolute top-0 left-0 w-full h-full p-4 lg:p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 backface-hidden overflow-hidden bg-white dark:bg-zinc-900 border-2",
              unlocked 
@@ -618,11 +617,10 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
                         {unlocked && (
                           <button
                              onClick={handleDownload}
-                             disabled={isDownloading}
                              className="px-3 py-2 rounded-xl font-bold text-xs transition-all flex items-center justify-center bg-zinc-800 hover:bg-zinc-700 active:scale-95 text-orange-500 border border-zinc-600 shadow-sm"
-                               title="Tải xuống huy chương PNG"
+                               title="Tải xuống huy chương PDF"
                           >
-                             {isDownloading ? <span className="animate-pulse">...</span> : <Download className="w-4 h-4"/>}
+                             <Download className="w-4 h-4"/>
                           </button>
                         )}
                     </div>

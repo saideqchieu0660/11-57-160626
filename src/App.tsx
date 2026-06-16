@@ -261,7 +261,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           break;
         case 'E':
           e.preventDefault();
-          toggleEcoMode();
+          toggleFixLag();
           break;
         case 'F':
           e.preventDefault();
@@ -283,7 +283,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [location.pathname, toggleEcoMode, navigate]);
+  }, [location.pathname, toggleFixLag, navigate]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -717,7 +717,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       const interval = setInterval(runContrastCheck, 1500);
       return () => clearInterval(interval);
     }
-  }, [showSettingsModal, appFontSize, theme, isEcoMode]);
+  }, [showSettingsModal, appFontSize, theme, isFixLagEnabled]);
 
   useEffect(() => {
     const handler = () => {
@@ -921,7 +921,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <MotionConfig reducedMotion={isEcoMode ? "always" : "user"}>
+    <MotionConfig reducedMotion={isFixLagEnabled ? "always" : "user"}>
       <div 
         className="min-h-screen flex flex-col font-sans transition-colors duration-300 overflow-x-hidden"
       >
@@ -958,13 +958,13 @@ function Layout({ children }: { children: React.ReactNode }) {
           )}
 
           <button 
-            onClick={toggleEcoMode} 
-            className={`hidden md:flex p-1.5 md:p-2 rounded-full transition flex-shrink-0 items-center justify-center gap-1 text-[11px] font-bold px-2 md:px-2.5 py-1 ${isEcoMode ? "bg-green-500/20 text-green-500 border border-green-500/30" : "hover:bg-black/5 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400"}`}
-            title={isEcoMode ? "Chế độ mượt đang Bật" : "Bật Chế độ Mượt (Fix Lag)"}
+            onClick={toggleFixLag} 
+            className={`hidden md:flex p-1.5 md:p-2 rounded-full transition flex-shrink-0 items-center justify-center gap-1 text-[11px] font-bold px-2 md:px-2.5 py-1 ${isFixLagEnabled ? "bg-green-500/20 text-green-500 border border-green-500/30" : "hover:bg-black/5 dark:hover:bg-white/10 text-zinc-600 dark:text-zinc-400"}`}
+            title={isFixLagEnabled ? "Chế độ mượt đang Bật" : "Bật Chế độ Mượt (Fix Lag)"}
             aria-label="Toggle Eco Mode"
           >
-            <Cpu className={`w-4 h-4 ${isEcoMode ? "animate-pulse" : ""}`} />
-            <span className="hidden sm:inline">{isEcoMode ? "Mượt" : "Fix Lag"}</span>
+            <Cpu className={`w-4 h-4 ${isFixLagEnabled ? "animate-pulse" : ""}`} />
+            <span className="hidden sm:inline">{isFixLagEnabled ? "Mượt" : "Fix Lag"}</span>
           </button>
 
           <button onClick={toggleTheme} className="nav-button-ripple " aria-label="Toggle Theme">
@@ -1385,11 +1385,11 @@ function Layout({ children }: { children: React.ReactNode }) {
 
                          <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-200 dark:border-zinc-805 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition border border-zinc-200 dark:border-zinc-800">
                             <div className="flex items-center gap-3">
-                               <Cpu className={`w-5 h-5 ${isEcoMode ? "text-green-500" : "text-zinc-400"}`} />
+                               <Cpu className={`w-5 h-5 ${isFixLagEnabled ? "text-green-500" : "text-zinc-400"}`} />
                                <span className="font-medium text-sm">Chế độ Mượt (Fix Lag)</span>
                             </div>
-                            <button onClick={toggleEcoMode} className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-xs ${isEcoMode ? "bg-green-500/20 text-green-500" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300"}`}>
-                               {isEcoMode ? "Đang Bật" : "Bật"}
+                            <button onClick={toggleFixLag} className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-xs ${isFixLagEnabled ? "bg-green-500/20 text-green-500" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300"}`}>
+                               {isFixLagEnabled ? "Đang Bật" : "Bật"}
                             </button>
                          </div>
 

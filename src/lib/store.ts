@@ -844,7 +844,7 @@ export const store = {
     if (currentUser) {
       // Penalty: Reset streak to 0, subtract points equivalent to a level if possible
       currentUser.streak = 0;
-      currentUser.lastStreakDate = "";
+      delete (currentUser as any).lastStreakDate;
       syncUserToFirebase();
     }
   },

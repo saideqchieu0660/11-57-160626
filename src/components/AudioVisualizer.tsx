@@ -8,7 +8,7 @@ export const AudioVisualizer = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || isEcoMode) return;
+    if (!canvas || isFixLagEnabled) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -57,9 +57,9 @@ export const AudioVisualizer = () => {
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [isEcoMode]);
+  }, [isFixLagEnabled]);
 
-  if (isEcoMode) return null;
+  if (isFixLagEnabled) return null;
 
   return (
     <canvas 

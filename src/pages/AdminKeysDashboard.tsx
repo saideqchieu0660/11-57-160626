@@ -637,20 +637,7 @@ export function ServiceMonitor({ adminKey }: { adminKey: string }) {
       );
     }
     
-    if (keys.length === 0 && openRouterKeys.length === 0 && groqKeys.length === 0 && deepInfraKeys.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center p-16 text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center mb-2">
-            <Key className="w-8 h-8 text-red-500" />
-          </div>
-          <h3 className="font-serif italic text-3xl font-medium text-zinc-900 dark:text-zinc-100">Khoá hệ thống đã cạn kiệt</h3>
-          <p className="text-zinc-500 max-w-md mx-auto tracking-wide font-light">Tất cả các hàng đợi API đều đang trống. Vui lòng cấu hình các khoá bí mật <code className="bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded text-red-500 font-mono text-xs">VITE_FIREBASE_API_KEY</code>, OpenRouter, Groq, hoặc DeepInfra để tái kích hoạt hệ thống truy vấn.</p>
-          <button onClick={fetchKeysStatus} className="mt-4 px-6 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-2 font-medium tracking-wide">
-             <RefreshCw className="w-4 h-4" /> Bắt buộc tải lại cấu hình
-          </button>
-        </div>
-      );
-    }
+    const isKeysEmpty = keys.length === 0 && openRouterKeys.length === 0 && groqKeys.length === 0 && deepInfraKeys.length === 0;
 
     if (activeTab === 'monitor') {
       return (
@@ -823,8 +810,23 @@ export function ServiceMonitor({ adminKey }: { adminKey: string }) {
             </div>
           </div>
 
+          {isKeysEmpty && (
+             <div className="flex flex-col items-center justify-center p-16 text-center space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-red-500/10 flex items-center justify-center mb-2">
+                <Key className="w-8 h-8 text-red-500" />
+              </div>
+              <h3 className="font-serif italic text-3xl font-medium text-zinc-900 dark:text-zinc-100">Khoá hệ thống đã cạn kiệt</h3>
+              <p className="text-zinc-500 max-w-md mx-auto tracking-wide font-light">Tất cả các hàng đợi API đều đang trống. Vui lòng cấu hình các khoá bí mật <code className="bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded text-red-500 font-mono text-xs">VITE_FIREBASE_API_KEY</code>, OpenRouter, Groq, hoặc DeepInfra để tái kích hoạt hệ thống truy vấn.</p>
+              <button onClick={fetchKeysStatus} className="mt-4 px-6 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-2 font-medium tracking-wide">
+                 <RefreshCw className="w-4 h-4" /> Bắt buộc tải lại cấu hình
+              </button>
+            </div>
+          )}
+
           {/* Gemini API Keys Section */}
-          <div className="space-y-4">
+          {!isKeysEmpty && (
+            <>
+              <div className="space-y-4">
             <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2">
               <h3 className="text-xl font-bold font-display text-blue-600 dark:text-blue-400 flex items-center gap-2">
                 <Cpu className="w-5 h-5 animate-pulse" />
@@ -1146,6 +1148,8 @@ export function ServiceMonitor({ adminKey }: { adminKey: string }) {
                 ))}
               </div>
           </div>
+         </>
+        )}
         </div>
       );
     }

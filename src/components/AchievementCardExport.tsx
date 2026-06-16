@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Download, Crown, Sparkles, Award, Star, X, CheckCircle2, Trophy, Compass, Shield, Flame, Activity, Hourglass, Calendar, Book, Clock, Cpu } from 'lucide-react';
+import { Download, Crown, Sparkles, Award, Star, X, CheckCircle2, Trophy, Compass, Shield, Flame, Activity, Hourglass, Calendar, Book, Clock, Cpu, Lock } from 'lucide-react';
 import { store } from '../lib/store';
 import html2canvas from 'html2canvas';
 

@@ -74,7 +74,7 @@ export default function TeacherDashboard() {
   
   const [enableBulkRename, setEnableBulkRename] = useState(false);
   const [renameFixedName, setRenameFixedName] = useState("");
-  const [renameStartIndex, setRenameStartIndex] = useState<number>(1);
+  const [renameStartIndex, setRenameStartIndex] = useState<number | ''>(1);
 
   // AI Lesson Plan States
   const [lessonTopic, setLessonTopic] = useState("");
@@ -650,7 +650,8 @@ export default function TeacherDashboard() {
       selectedDeckIds.forEach((id, idx) => {
         let updateData: any = { subject: destination };
         if (enableBulkRename && renameFixedName.trim()) {
-           updateData.title = `${renameFixedName.trim()} ${renameStartIndex + idx}`;
+           const startIdx = typeof renameStartIndex === 'number' ? renameStartIndex : 1;
+           updateData.title = `${renameFixedName.trim()} ${startIdx + idx}`;
         }
         batch.update(doc(db, "sets", id), updateData);
       });
@@ -663,7 +664,8 @@ export default function TeacherDashboard() {
           const idx = selectedDeckIds.indexOf(deck.id);
           let finalData: any = { ...deck, subject: destination };
           if (enableBulkRename && renameFixedName.trim()) {
-             finalData.title = `${renameFixedName.trim()} ${renameStartIndex + idx}`;
+             const startIdx = typeof renameStartIndex === 'number' ? renameStartIndex : 1;
+             finalData.title = `${renameFixedName.trim()} ${startIdx + idx}`;
           }
           return finalData;
         }
@@ -2006,12 +2008,12 @@ export default function TeacherDashboard() {
                         type="number"
                         min="1"
                         value={renameStartIndex}
-                        onChange={(e) => setRenameStartIndex(Number(e.target.value) || 1)}
+                        onChange={(e) => setRenameStartIndex(e.target.value === '' ? '' : Number(e.target.value))}
                         className="w-full bg-white dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-lg p-2 text-xs font-bold outline-none text-zinc-900 dark:text-zinc-100"
                       />
                    </div>
                    <p className="text-[10px] text-orange-600 dark:text-orange-400 font-medium pt-1">
-                     * Các bộ được chọn sẽ có tên bắt đầu là: <strong className="font-black text-xs text-orange-700 dark:text-orange-300">{renameFixedName.trim() ? `"${renameFixedName.trim()} ${renameStartIndex}", "${renameFixedName.trim()} ${renameStartIndex + 1}"...` : "..."}</strong>
+                     * Các bộ được chọn sẽ có tên bắt đầu là: <strong className="font-black text-xs text-orange-700 dark:text-orange-300">{renameFixedName.trim() ? `"${renameFixedName.trim()} ${renameStartIndex || 1}", "${renameFixedName.trim()} ${(renameStartIndex || 1) + 1}"...` : "..."}</strong>
                    </p>
                 </div>
               )}
@@ -2047,7 +2049,6 @@ export default function TeacherDashboard() {
           initialTitle={editingDeckData.title}
           initialSubject={editingDeckData.subject}
           onSaveSuccess={() => {
-            setDecks(store.getDecks());
             setLocalDecks(store.getDecks());
           }}
         />

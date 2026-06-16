@@ -1178,7 +1178,7 @@ export default function StudentDashboard() {
   const handleClearCache = () => {
     const systemKeysToKeep = [
       "theme",
-      "isEcoMode",
+      "isFixLagEnabled",
       "henosis-font-size",
       "henosis-ui-density",
       "autoUpdateInterval",
@@ -4460,7 +4460,7 @@ export default function StudentDashboard() {
                 <button
                   onClick={() => {
                      click();
-                     toggleEcoMode();
+                     toggleFixLag();
                   }}
                   className="font-mono text-[10px] font-bold tracking-widest px-4 py-2 bg-orange-500 text-black hover:bg-orange-400 transition-all rounded-lg"
                 >
@@ -4620,7 +4620,7 @@ export default function StudentDashboard() {
               <div className="stone-carved card-3d p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
                  <div className="space-y-2 max-w-lg">
                     <h4 className="font-serif italic font-medium text-xl flex items-center gap-2">
-                       <Snowflake className={cn("w-5 h-5", isEcoMode ? "text-green-500 animate-[spin_4s_linear_infinite]" : "text-zinc-400")} />
+                       <Snowflake className={cn("w-5 h-5", isFixLagEnabled ? "text-green-500 animate-[spin_4s_linear_infinite]" : "text-zinc-400")} />
                        Chế Độ Mượt - Giảm Lag (Eco / Fix Lag)
                     </h4>
                     <p className="font-sans font-light tracking-wide opacity-70 text-sm">
@@ -4628,14 +4628,14 @@ export default function StudentDashboard() {
                     </p>
                  </div>
                  <button 
-                    onClick={toggleEcoMode}
+                    onClick={toggleFixLag}
                     className={cn(
                        "shrink-0 px-6 py-3 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center gap-2 shadow-lg cursor-pointer",
-                       isEcoMode ? "bg-green-500 hover:bg-green-600 text-white" : "bg-zinc-300 dark:bg-zinc-800 hover:bg-zinc-400 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
+                       isFixLagEnabled ? "bg-green-500 hover:bg-green-600 text-white" : "bg-zinc-300 dark:bg-zinc-800 hover:bg-zinc-400 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200"
                     )}
                  >
                     <Snowflake className="w-5 h-5" />
-                    {isEcoMode ? "Đang Bật Chế Độ Mượt" : "Bật Fix Lag"}
+                    {isFixLagEnabled ? "Đang Bật Chế Độ Mượt" : "Bật Fix Lag"}
                  </button>
               </div>
 
@@ -5269,7 +5269,7 @@ export default function StudentDashboard() {
                          <p className="text-[10px] text-zinc-500">{deck.cards?.length || 0} thẻ • Nhóm: {deck.subject || "Khác"}</p>
                        </div>
                        <div className={cn("w-5 h-5 rounded-md flex items-center justify-center border", isSelected ? "bg-rose-500 border-rose-500 text-white" : "border-zinc-300 dark:border-zinc-700")}>
-                          {isSelected && <Check className="w-3 h-3" />}
+                     {isSelected && <CheckCircle2 className="w-3 h-3" />}
                        </div>
                      </div>
                    );
@@ -5676,7 +5676,7 @@ export default function StudentDashboard() {
           initialTitle={editingDeckData.title}
           initialSubject={editingDeckData.subject}
           onSaveSuccess={() => {
-            setDecks(store.getDecks());
+            setForceRender(prev => prev + 1);
           }}
         />
       )}

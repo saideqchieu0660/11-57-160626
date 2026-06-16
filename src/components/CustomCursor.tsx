@@ -13,7 +13,7 @@ export const CustomCursor = () => {
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    if (isEcoMode) return;
+    if (isFixLagEnabled) return;
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16);
@@ -44,9 +44,9 @@ export const CustomCursor = () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [cursorX, cursorY, isEcoMode]);
+  }, [cursorX, cursorY, isFixLagEnabled]);
 
-  if (isEcoMode) {
+  if (isFixLagEnabled) {
     return null;
   }
 
