@@ -34,8 +34,6 @@ export const ParticleBackground = () => {
           />
         ))}
       </svg>
-      {/* Marble Texture Filter Wrapper - Removed mix-blend-overlay for 60FPS */}
-      <div className="marble-overlay fixed inset-0 pointer-events-none"></div>
     </div>
   );
 };

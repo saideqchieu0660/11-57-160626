@@ -31,6 +31,7 @@ import { CyberCard } from "../components/CyberCard";
 import { CinematicContainer } from "../components/CinematicContainer";
 import { InteractiveTutorial } from "../components/InteractiveTutorial";
 import { ServiceMonitor } from "./AdminKeysDashboard";
+import { EditDeckModal } from "../components/EditDeckModal";
 
 import { DeckList } from "../components/DeckList";
 import { ErrorBoundary } from "../components/ErrorBoundary";
@@ -207,6 +208,8 @@ export default function StudentDashboard() {
   const currentFreezeCost = Math.floor(50 * Math.pow(1.5, user?.streakFreezeCount || 0));
   
   const [levelUpData, setLevelUpData] = useState<{level: number, quote: string} | null>(null);
+
+  const [editingDeckData, setEditingDeckData] = useState<{ id: string; title: string; subject: string } | null>(null);
 
   const [showAchillesSetup, setShowAchillesSetup] = useState(false);
   const [achillesSelectedDecks, setAchillesSelectedDecks] = useState<string[]>([]);
@@ -2339,10 +2342,10 @@ export default function StudentDashboard() {
             </div>
 
             {viewMode === "recent" ? (
-               <DeckList decks={decks.slice(0, 4)} showSearch={false} />
+               <DeckList decks={decks.slice(0, 4)} showSearch={false} onEditDeck={(deck) => setEditingDeckData({ id: deck.id, title: typeof deck.title === 'string' ? deck.title : JSON.stringify(deck.title), subject: deck.subject || "Tự chọn" })} />
             ) : (
                <div className="glass p-4 rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 animate-in fade-in duration-300">
-                  <DeckList decks={decks} showSearch={true} groupBySubject={true} onCategoryQuiz={(subject, subjectDecks) => setActiveQuizSetup({ subject, decks: subjectDecks })} onCategoryReviewHardCards={startCategoryRemindLaterStudy} onCategoryStudyAll={startCategoryStudyAll} isAdmin={user?.role === 'admin' || user?.role === 'Admin' || user?.role === 'teacher' || sessionStorage.getItem('adminToken') === 'true'} />
+                  <DeckList decks={decks} showSearch={true} groupBySubject={true} onCategoryQuiz={(subject, subjectDecks) => setActiveQuizSetup({ subject, decks: subjectDecks })} onCategoryReviewHardCards={startCategoryRemindLaterStudy} onCategoryStudyAll={startCategoryStudyAll} isAdmin={user?.role === 'admin' || user?.role === 'Admin' || user?.role === 'teacher' || sessionStorage.getItem('adminToken') === 'true'} onEditDeck={(deck) => setEditingDeckData({ id: deck.id, title: typeof deck.title === 'string' ? deck.title : JSON.stringify(deck.title), subject: deck.subject || "Tự chọn" })} />
                </div>
             )}
 
@@ -2574,7 +2577,7 @@ export default function StudentDashboard() {
           </div>
 
           <div className="glass p-6 md:p-8 rounded-3xl border border-zinc-200/50 dark:border-zinc-800/50 bg-white/40 dark:bg-black/40 backdrop-blur-xl shadow-xl">
-            <DeckList decks={decks} showSearch={true} groupBySubject={true} onCategoryQuiz={(subject, subjectDecks) => setActiveQuizSetup({ subject, decks: subjectDecks })} onCategoryReviewHardCards={startCategoryRemindLaterStudy} onCategoryStudyAll={startCategoryStudyAll} isAdmin={user?.role === 'admin' || user?.role === 'Admin' || user?.role === 'teacher' || sessionStorage.getItem('adminToken') === 'true'} />
+            <DeckList decks={decks} showSearch={true} groupBySubject={true} onCategoryQuiz={(subject, subjectDecks) => setActiveQuizSetup({ subject, decks: subjectDecks })} onCategoryReviewHardCards={startCategoryRemindLaterStudy} onCategoryStudyAll={startCategoryStudyAll} isAdmin={user?.role === 'admin' || user?.role === 'Admin' || user?.role === 'teacher' || sessionStorage.getItem('adminToken') === 'true'} onEditDeck={(deck) => setEditingDeckData({ id: deck.id, title: typeof deck.title === 'string' ? deck.title : JSON.stringify(deck.title), subject: deck.subject || "Tự chọn" })} />
           </div>
         </motion.div>
       )}
@@ -5665,6 +5668,18 @@ export default function StudentDashboard() {
         <span className="hidden md:inline">Hướng dẫn nhanh</span>
       </button>
 
+      {editingDeckData && (
+        <EditDeckModal
+          isOpen={!!editingDeckData}
+          onClose={() => setEditingDeckData(null)}
+          deckId={editingDeckData.id}
+          initialTitle={editingDeckData.title}
+          initialSubject={editingDeckData.subject}
+          onSaveSuccess={() => {
+            setDecks(store.getDecks());
+          }}
+        />
+      )}
     </div>
   );
 }

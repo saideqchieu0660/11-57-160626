@@ -68,7 +68,9 @@ export function GlobalErrorToast() {
       
       if (
          reasonMsg.includes("dynamically imported module") || 
-         reasonMsg.includes("Loading chunk failed")
+         reasonMsg.includes("Loading chunk failed") ||
+         reasonMsg.includes("WebSocket closed without opened") ||
+         reasonMsg.includes("WebSocket is not open")
       ) {
          isIgnored = true;
       }

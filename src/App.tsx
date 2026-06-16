@@ -39,7 +39,8 @@ import { AutoRefreshBadge } from "./components/AutoRefreshBadge";
 import { ForceRefreshButton } from "./components/ForceRefreshButton";
 import { ShortcutsHelpModal } from "./components/ShortcutsHelpModal";
 import { ConfirmModal } from "./components/ConfirmModal";
-import { Keyboard } from "lucide-react";
+import { Keyboard, Timer } from "lucide-react";
+import { DeepWorkTimer } from "./components/DeepWorkTimer";
 
 const GreekSunMoonIcon = ({ isDark, className }: { isDark: boolean, className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className={`will-change-transform ${className}`}>
@@ -134,6 +135,14 @@ function Layout({ children }: { children: React.ReactNode }) {
   
   const [showSyncConfirm, setShowSyncConfirm] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  
+  const [isDeepWorkMode, setIsDeepWorkMode] = useState(localStorage.getItem('henosis_deepwork') === 'true');
+  const toggleDeepWork = () => {
+      const newState = !isDeepWorkMode;
+      setIsDeepWorkMode(newState);
+      localStorage.setItem('henosis_deepwork', newState.toString());
+      window.dispatchEvent(new CustomEvent('henosis-deepwork-toggled'));
+  };
 
   const handleVerifyAdminKey = async () => {
      if (!adminKeyInput.trim() || !user) return;
@@ -909,6 +918,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div 
         className="min-h-screen flex flex-col font-sans transition-colors duration-300 overflow-x-hidden"
       >
+      <div className="marble-overlay fixed inset-0 pointer-events-none z-0"></div>
       <CustomCursor />
       <ParticleBackground />
       <NetworkStatus />
@@ -1378,6 +1388,16 @@ function Layout({ children }: { children: React.ReactNode }) {
 
                          <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-200 dark:border-zinc-808 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition border border-zinc-200 dark:border-zinc-800">
                             <div className="flex items-center gap-3">
+                               <Timer className={`w-5 h-5 ${isDeepWorkMode ? "text-orange-500 animate-pulse" : "text-zinc-400"}`} />
+                               <span className="font-medium text-sm">Chế độ Deep Work</span>
+                            </div>
+                            <button onClick={toggleDeepWork} className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-xs transition cursor-pointer ${isDeepWorkMode ? "bg-orange-500/20 text-orange-600 dark:text-orange-400" : "bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300"}`}>
+                               {isDeepWorkMode ? "Đang Bật" : "Bật"}
+                            </button>
+                         </div>
+
+                         <div className="flex items-center justify-between p-4 rounded-xl border border-zinc-200 dark:border-zinc-808 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition border border-zinc-200 dark:border-zinc-800">
+                            <div className="flex items-center gap-3">
                                <Keyboard className="w-5 h-5 text-orange-500 animate-pulse" />
                                <span className="font-medium text-sm">Phím Tắt & Cẩm Nang</span>
                             </div>
@@ -1509,6 +1529,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         confirmText="Đăng xuất"
         isDestructive={true}
       />
+      <DeepWorkTimer />
     </div>
     </MotionConfig>
   );

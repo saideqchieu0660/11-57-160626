@@ -31,6 +31,14 @@ export function GlobalErrorReporter() {
 
     const handlePromiseRejection = (event: PromiseRejectionEvent) => {
       const reason = event.reason;
+      const reasonMsg = typeof reason === 'string' ? reason : (reason?.message || "");
+      if (
+        reasonMsg.includes("dynamically imported module") || 
+        reasonMsg.includes("Loading chunk failed") ||
+        reasonMsg.includes("WebSocket closed without opened") ||
+        reasonMsg.includes("WebSocket is not open")
+      ) return;
+
       setErrorLog({
         message: typeof reason === 'string' ? reason : (reason?.message || "Lỗi xử lý (Promise Rejection)"),
         stack: reason?.stack || "No stack",

@@ -15,6 +15,7 @@ interface DeckListProps {
   onCategoryReviewHardCards?: (subject: string, subjectDecks: Deck[]) => void;
   onCategoryStudyAll?: (subject: string, subjectDecks: Deck[]) => void;
   isAdmin?: boolean;
+  onEditDeck?: (deck: Deck) => void;
 }
 
 const TiltCard = ({ children, delayIdx, className = "" }: { children: React.ReactNode, delayIdx: number, className?: string }) => {
@@ -77,7 +78,7 @@ const TiltCard = ({ children, delayIdx, className = "" }: { children: React.Reac
   );
 };
 
-export const DeckList = ({ decks, showSearch = true, groupBySubject = false, onCategoryQuiz, onCategoryReviewHardCards, onCategoryStudyAll, isAdmin = false }: DeckListProps) => {
+export const DeckList = ({ decks, showSearch = true, groupBySubject = false, onCategoryQuiz, onCategoryReviewHardCards, onCategoryStudyAll, isAdmin = false, onEditDeck }: DeckListProps) => {
   const currentUser = store.getCurrentUser();
   const [pinnedDecks, setPinnedDecks] = useState<string[]>(() => {
     const saved = localStorage.getItem(`pinned_decks_${currentUser?.id || 'guest'}`);
@@ -528,7 +529,16 @@ const safeSetItem = (key: string, value: string) => {
 
                       return (
                         <TiltCard key={deck.id} delayIdx={idx} className="w-[85vw] sm:w-[380px] shrink-0 snap-start h-auto">
-                          <div className="absolute top-4 right-4 z-20">
+                          <div className="absolute top-4 right-4 z-20 flex gap-2">
+                            {onEditDeck && (isAdmin || deck.createdBy === currentUser?.id) && (
+                              <button
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEditDeck(deck); }}
+                                className="p-2 rounded-full transition-colors bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20"
+                                title="Sửa tên và danh mục"
+                              >
+                                <Edit3 className="w-5 h-5" />
+                              </button>
+                            )}
                             <button
                               onClick={(e) => { e.preventDefault(); e.stopPropagation(); togglePin(deck.id); }}
                               className={`p-2 rounded-full transition-colors ${pinnedDecks.includes(deck.id) ? 'bg-orange-500/20 text-orange-500 hover:bg-orange-500/30' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'}`}
@@ -600,7 +610,16 @@ const safeSetItem = (key: string, value: string) => {
                 return (
                   <TiltCard key={deck.id} delayIdx={idx}>
                     {/* Animated gradient border pseudo-element effect already handled by .card-3d layer logic */}
-                    <div className="absolute top-4 right-4 z-20">
+                    <div className="absolute top-4 right-4 z-20 flex gap-2">
+                      {onEditDeck && (isAdmin || deck.createdBy === currentUser?.id) && (
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEditDeck(deck); }}
+                          className="p-2 rounded-full transition-colors bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20"
+                          title="Sửa tên và danh mục"
+                        >
+                          <Edit3 className="w-5 h-5" />
+                        </button>
+                      )}
                       <button
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); togglePin(deck.id); }}
                         className={`p-2 rounded-full transition-colors ${pinnedDecks.includes(deck.id) ? 'bg-orange-500/20 text-orange-500 hover:bg-orange-500/30' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300'}`}

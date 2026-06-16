@@ -41,8 +41,8 @@ try {
   console.warn("Failed to apply Canvas getBoundingClientRect polyfills:", e);
 }
 
-// Unregister service worker to prevent corrupt caching / blank page issues
-unregisterServiceWorker();
+// Removed old unregister to allow PWA Service Worker offline caching
+// unregisterServiceWorker();
 
 // Handle dynamic import failures globally (Auto-reload on new production deployments)
 const handleChunkError = (message: string) => {
@@ -84,3 +84,26 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>,
 );
+
+// 🌍 OFFLINE-FIRST PWA Registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      console.log('👷 [PWA] Service Worker registered successfully: ', registration.scope);
+    }).catch((registrationError) => {
+      console.error('⚠️ [PWA] Service Worker registration failed: ', registrationError);
+    });
+  });
+
+  window.addEventListener('online', async () => {
+    console.log('📡 [App] Kết nối mạng đả khôi phục! Kích hoạt Background Sync để đẩy các thao tác chờ...');
+    if ('SyncManager' in window) {
+      try {
+        const swRegistration = await navigator.serviceWorker.ready;
+        await (swRegistration as any).sync.register('sync-henosis-data');
+      } catch (e) {
+        console.error("Manual sync registration failed", e);
+      }
+    }
+  });
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { store, Deck } from "../lib/store";
-import { FileText, Upload, AlertCircle, AlertTriangle, BarChart3, Users, CheckCircle2, TrendingUp, Target, FileUp, Activity, BookOpen, Shield, Trash2, FolderOpen, Inbox, Layers, Settings, Check, X, RefreshCw, Plus, Heart, LogOut, ChevronDown, ChevronUp, Lock, Sparkles } from "lucide-react";
+import { FileText, Upload, AlertCircle, AlertTriangle, BarChart3, Users, CheckCircle2, TrendingUp, Target, FileUp, Activity, BookOpen, Shield, Trash2, FolderOpen, Inbox, Layers, Settings, Check, X, RefreshCw, Plus, Heart, LogOut, ChevronDown, ChevronUp, Lock, Sparkles, Edit2 } from "lucide-react";
 import { Navigate, Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { CustomDeckSelect } from "../components/CustomDeckSelect";
@@ -11,6 +11,7 @@ import DocumentConverter from "../components/DocumentConverter";
 import { ServiceMonitor } from "./AdminKeysDashboard";
 import { DashboardSkeleton } from "../components/DashboardSkeleton";
 import { GlobalActivityFeed } from "../components/GlobalActivityFeed";
+import { EditDeckModal } from "../components/EditDeckModal";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TeacherDashboard() {
@@ -57,6 +58,8 @@ export default function TeacherDashboard() {
   };
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
+  
+  const [editingDeckData, setEditingDeckData] = useState<{ id: string; title: string; subject: string } | null>(null);
   const [isSavingCategoryName, setIsSavingCategoryName] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   
@@ -1593,8 +1596,25 @@ export default function TeacherDashboard() {
                               </div>
                             </div>
                             <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-0 border-zinc-200 dark:border-zinc-800 w-full sm:w-auto">
+                              {(user?.role === "teacher" || user?.role === "admin" || user?.role === "Admin") && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setEditingDeckData({ 
+                                      id: deck.id, 
+                                      title: typeof deck.title === 'string' ? deck.title : JSON.stringify(deck.title), 
+                                      subject: deck.subject 
+                                    }); 
+                                  }}
+                                  className="bg-blue-600/10 hover:bg-blue-600 text-blue-650 hover:text-white p-1.5 px-3 rounded-lg text-xs font-bold transition shrink-0 flex items-center justify-center border-none cursor-pointer"
+                                  title="Đổi tên và danh mục"
+                                >
+                                  <Edit2 className="w-4 h-4" />
+                                </button>
+                              )}
                               <Link to={`/study/${deck.id}`} className="flex-1 sm:flex-none text-center bg-orange-500 text-black px-3 py-1.5 rounded-lg text-xs font-bold shadow hover:bg-orange-600 transition shrink-0 whitespace-nowrap">
-                                Xem / Sửa
+                                Xem chi tiết
                               </Link>
                               {(user?.role === "teacher" || user?.role === "admin" || user?.role === "Admin") && (
                                 <button
@@ -2017,6 +2037,20 @@ export default function TeacherDashboard() {
             </div>
           </div>
         </div>
+      )}
+
+      {editingDeckData && (
+        <EditDeckModal
+          isOpen={!!editingDeckData}
+          onClose={() => setEditingDeckData(null)}
+          deckId={editingDeckData.id}
+          initialTitle={editingDeckData.title}
+          initialSubject={editingDeckData.subject}
+          onSaveSuccess={() => {
+            setDecks(store.getDecks());
+            setLocalDecks(store.getDecks());
+          }}
+        />
       )}
     </div>
   );
