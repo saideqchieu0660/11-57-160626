@@ -491,13 +491,20 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
     try {
       setIsDownloading(true);
       
-      const dataUrl = await toPng(captureRef.current, { cacheBust: true, pixelRatio: 2, style: { transform: 'scale(1)', opacity: '1' } });
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = `henosis-${badge.name.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.png`;
-      a.click();
+      const { jsPDF } = await import('jspdf');
+      const dataUrl = await toPng(captureRef.current, { cacheBust: true, pixelRatio: 2 });
+      
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [450, 600]
+      });
+      
+      pdf.addImage(dataUrl, 'PNG', 0, 0, 450, 600);
+      pdf.save(`henosis-${badge.name.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.pdf`);
     } catch (err) {
       console.error('Failed to export achievement data:', err);
+      alert('Không thể tải chứng nhận. Vui lòng thử lại.');
     } finally {
       setTimeout(() => setIsDownloading(false), 500);
     }
@@ -509,10 +516,10 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
   return (
     <>
       {/* Khung ẩn chuyên dụng để render ảnh export - Không dùng cho UI hiển thị */}
-      <div className="absolute top-[-9999px] left-[-9999px] z-[-9999] pointer-events-none opacity-0">
+      <div className="absolute top-[200vh] left-[200vw] z-[-9999] pointer-events-none">
         <div 
           ref={captureRef}
-          className="w-[450px] p-8 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-zinc-900 to-black rounded-3xl border-4 border-zinc-800 shadow-2xl relative overflow-hidden"
+          className="w-[450px] h-[600px] p-8 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-zinc-900 to-black rounded-3xl border-4 border-zinc-800 shadow-2xl relative overflow-hidden"
           style={{ fontFamily: 'sans-serif' }}
         >
           {/* Background effects */}
