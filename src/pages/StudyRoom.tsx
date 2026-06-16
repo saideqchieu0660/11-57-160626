@@ -207,7 +207,7 @@ const ParsedTextContent = ({ text }: { text: string }) => {
 
 export default function StudyRoom() {
   const navigate = useNavigate();
-  const { isEcoMode } = useTheme();
+  const { isFixLagEnabled } = useTheme();
   const { isSoundEnabled, toggleSound } = useSoundContext();
   useEffect(() => {
     document.title = "Henosis - Study Room";

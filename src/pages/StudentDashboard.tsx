@@ -201,7 +201,7 @@ export default function StudentDashboard() {
     document.title = "Henosis - Student Dashboard";
   }, []);
 
-  const { isEcoMode, toggleEcoMode } = useTheme();
+  const { isFixLagEnabled, toggleFixLag } = useTheme();
   const { click, success, error } = useSound();
   const user = store.getCurrentUser();
   const prevLevelRef = useRef<number | null>(null);

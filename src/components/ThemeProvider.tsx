@@ -5,15 +5,15 @@ type Theme = "dark" | "light";
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: (e?: React.MouseEvent) => void;
-  isEcoMode: boolean;
-  toggleEcoMode: () => void;
+  isFixLagEnabled: boolean;
+  toggleFixLag: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
-  const [isEcoMode, setIsEcoMode] = useState<boolean>(false);
+  const [isFixLagEnabled, setIsFixLagEnabled] = useState<boolean>(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -24,23 +24,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.remove('dark');
     }
 
-    const savedEco = localStorage.getItem('isEcoMode') === 'true';
-    setIsEcoMode(savedEco);
+    const savedEco = localStorage.getItem('isFixLagEnabled') === 'true';
+    setIsFixLagEnabled(savedEco);
     if (savedEco) {
-      document.documentElement.classList.add('eco-mode');
+      document.documentElement.classList.add('fix-lag');
     } else {
-      document.documentElement.classList.remove('eco-mode');
+      document.documentElement.classList.remove('fix-lag');
     }
   }, []);
 
-  const toggleEcoMode = () => {
-    const nextEco = !isEcoMode;
-    setIsEcoMode(nextEco);
-    localStorage.setItem('isEcoMode', String(nextEco));
+  const toggleFixLag = () => {
+    const nextEco = !isFixLagEnabled;
+    setIsFixLagEnabled(nextEco);
+    localStorage.setItem('isFixLagEnabled', String(nextEco));
     if (nextEco) {
-      document.documentElement.classList.add('eco-mode');
+      document.documentElement.classList.add('fix-lag');
     } else {
-      document.documentElement.classList.remove('eco-mode');
+      document.documentElement.classList.remove('fix-lag');
     }
   };
 
@@ -98,7 +98,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isEcoMode, toggleEcoMode }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isFixLagEnabled, toggleFixLag }}>
       {children}
     </ThemeContext.Provider>
   );

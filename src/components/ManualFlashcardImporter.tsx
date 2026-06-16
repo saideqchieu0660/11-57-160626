@@ -34,7 +34,7 @@ import { store, Deck } from "../lib/store";
 import { useTheme } from "./ThemeProvider.js";
 
 export default function ManualFlashcardImporter() {
-  const { isEcoMode } = useTheme();
+  const { isFixLagEnabled } = useTheme();
   const [activeTab, setActiveTab] = useState<"automated" | "manual">(
     "automated",
   );

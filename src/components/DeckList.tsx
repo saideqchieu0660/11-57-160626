@@ -44,7 +44,7 @@ const TiltCard = ({ children, delayIdx, className = "" }: { children: React.Reac
     y.set(0);
   };
 
-  const { theme, isEcoMode } = useTheme();
+  const { theme, isFixLagEnabled } = useTheme();
 
   if (isEcoMode) {
     return (

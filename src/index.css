@@ -38,8 +38,20 @@
     animation: none !important;
   }
 
+  /* ABSOLUTE HARDWARE PERFORMANCE ENFORCEMENT */
+  * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    filter: drop-shadow(0 0 0 transparent) !important;
+  }
+  
+  /* Strip heavy box shadows dynamically across app */
+  .shadow-xl, .shadow-2xl, [class*="shadow-"] {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  }
+
   a, button, [role="button"], input, select, textarea, .glass, .card, .nav-button-ripple {
-    will-change: transform, opacity;
+    will-change: transform, opacity, clip-path;
   }
 
   *:focus-visible {
@@ -150,7 +162,7 @@ strong, b {
 /* 2. Constellation Geometry */
 .constellation-line {
   stroke: rgba(228, 228, 231, 0.4);
-  stroke-width: 1px;
+  stroke-width: 1.2px;
   fill: none;
   transition: stroke 0.3s ease;
   will-change: stroke;
@@ -369,33 +381,33 @@ svg[class*="lucide"] {
   transform: rotateY(180deg);
 }
 
-/* Eco Mode / Fix Lag Styles (Strict Performance Optimization) */
-.eco-mode body, .eco-mode .dark body {
+/* Fix Lag Mode (Strict Performance Optimization 120FPS Marble) */
+.fix-lag body, .fix-lag .dark body {
   animation: none !important;
   background-image: none !important;
 }
-.eco-mode body {
-  background-color: #fafafa !important;
+.fix-lag body {
+  background-color: #ffffff !important;
 }
-.eco-mode.dark body {
+.fix-lag.dark body {
   background-color: #09090b !important;
 }
-.eco-mode * {
+.fix-lag * {
   box-shadow: none !important;
   text-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   filter: none !important;
-  /* Allow only transform and opacity transitions for minimal 60fps interaction */
-  transition-property: transform, opacity, background-color, color !important;
-  transition-duration: 0.15s !important;
+  /* Allow only transform and opacity transitions for minimal 120fps interaction */
+  transition-property: transform, opacity !important;
+  transition-duration: 0ms !important;
 }
 
-.eco-mode [class*="animate-"] {
+.fix-lag [class*="animate-"] {
   animation: none !important;
 }
 
-/* 60FPS Hardware Acceleration & Rendering Optimizations */
+/* 120FPS Hardware Acceleration & Rendering Optimizations */
 .gpu-accelerated {
   transform: translateZ(0);
   will-change: transform, opacity;
@@ -408,37 +420,37 @@ svg[class*="lucide"] {
   contain-intrinsic-size: 100px 300px;
 }
 
-.eco-mode .card-3d:hover, .eco-mode .glass:hover {
+.fix-lag .card-3d:hover, .fix-lag .glass:hover, .fix-lag .stone-carved:hover {
   transform: none !important;
 }
 
-.eco-mode .glass, .eco-mode .card-3d {
+.fix-lag .glass, .fix-lag .card-3d {
   background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  border-color: #e4e4e7 !important;
   color: #000000 !important;
 }
-.eco-mode.dark .glass, .eco-mode.dark .card-3d {
+.fix-lag.dark .glass, .fix-lag.dark .card-3d {
   background-color: #09090b !important;
-  border-color: #1e293b !important;
+  border-color: #27272a !important;
   color: #ffffff !important;
 }
 
-.eco-mode .transform-style-3d {
+.fix-lag .transform-style-3d {
   transform-style: preserve-3d !important;
 }
-.eco-mode .backface-hidden {
+.fix-lag .backface-hidden {
   backface-visibility: hidden !important;
   -webkit-backface-visibility: hidden !important;
   background-color: #ffffff !important;
   color: #000000 !important;
-  border-color: #cbd5e1 !important;
+  border-color: #e4e4e7 !important;
 }
-.eco-mode.dark .backface-hidden {
+.fix-lag.dark .backface-hidden {
   background-color: #09090b !important;
   color: #ffffff !important;
-  border-color: #1e293b !important;
+  border-color: #27272a !important;
 }
-.eco-mode .backface-hidden * {
+.fix-lag .backface-hidden * {
   text-shadow: none !important;
 }
 

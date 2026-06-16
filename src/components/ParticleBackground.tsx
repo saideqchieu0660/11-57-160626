@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTheme } from './ThemeProvider';
 
 export const ParticleBackground = () => {
-  const { isEcoMode } = useTheme();
+  const { isFixLagEnabled } = useTheme();
 
   const stars = useMemo(() => {
     return Array.from({ length: 40 }).map((_, i) => ({
@@ -15,7 +15,7 @@ export const ParticleBackground = () => {
     }));
   }, []);
 
-  if (isEcoMode) return null;
+  if (isFixLagEnabled) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-60">

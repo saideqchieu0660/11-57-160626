@@ -75,20 +75,27 @@ const AthenaOwlIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const PillarSymmetry = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-  <div className={`border-l-[3px] border-r-[3px] border-double border-zinc-300 dark:border-zinc-800 ${className || ""}`}>
-    {children}
-  </div>
-);
+const PillarSymmetry = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+  const { isFixLagEnabled } = useTheme();
+  return (
+    <div className={`border-l-2 border-r-2 ${isFixLagEnabled ? 'border-zinc-200 dark:border-zinc-800' : 'border-zinc-300 dark:border-zinc-700/50 rounded-none'} ${className || ""}`}>
+      {children}
+    </div>
+  );
+};
 
-const MeanderLine = () => (
-  <svg width="100%" height="12" preserveAspectRatio="none" className="opacity-20 pointer-events-none my-2 transition-all">
-    <pattern id="meander" x="0" y="0" width="24" height="12" patternUnits="userSpaceOnUse">
-      <path d="M0,12 L0,0 L20,0 L20,8 L4,8 L4,4 L16,4 L16,6 L8,6 L8,12" fill="none" stroke="currentColor" strokeWidth="1.2" />
-    </pattern>
-    <rect x="0" y="0" width="100%" height="12" fill="url(#meander)" />
-  </svg>
-);
+const MeanderLine = () => {
+  const { isFixLagEnabled } = useTheme();
+  if (isFixLagEnabled) return null;
+  return (
+    <svg width="100%" height="12" preserveAspectRatio="none" className="opacity-10 pointer-events-none my-2 transition-all fret-pattern stone-carved">
+      <pattern id="meander" x="0" y="0" width="24" height="12" patternUnits="userSpaceOnUse">
+        <path d="M0,12 L0,0 L20,0 L20,8 L4,8 L4,4 L16,4 L16,6 L8,6 L8,12" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      </pattern>
+      <rect x="0" y="0" width="100%" height="12" fill="url(#meander)" />
+    </svg>
+  );
+};
 
 const PageLoader = () => (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-zinc-500">
@@ -113,7 +120,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { theme, toggleTheme, isEcoMode, toggleEcoMode } = useTheme();
+  const { theme, toggleTheme, isFixLagEnabled, toggleFixLag } = useTheme();
   const { isSoundEnabled, toggleSound } = useSoundContext();
   const navigate = useNavigate();
   const location = useLocation();

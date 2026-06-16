@@ -3,7 +3,7 @@ import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useTheme } from './ThemeProvider';
 
 export const CustomCursor = () => {
-  const { isEcoMode } = useTheme();
+  const { isFixLagEnabled } = useTheme();
   const [isHovering, setIsHovering] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);

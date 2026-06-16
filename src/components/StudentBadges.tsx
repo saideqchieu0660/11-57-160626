@@ -479,34 +479,13 @@ const itemVariants = {
 
 const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const frontRef = useRef<HTMLDivElement>(null);
   const Icon = badge.icon;
-
-  const captureRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!unlocked || !captureRef.current) return;
-    try {
-      setIsDownloading(true);
-      
-      const { jsPDF } = await import('jspdf');
-      const dataUrl = await toPng(captureRef.current, { cacheBust: true, pixelRatio: 2 });
-      
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'px',
-        format: [450, 600]
-      });
-      
-      pdf.addImage(dataUrl, 'PNG', 0, 0, 450, 600);
-      pdf.save(`henosis-${badge.name.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}.pdf`);
-    } catch (err) {
-      console.error('Failed to export achievement data:', err);
-      alert('Không thể tải chứng nhận. Vui lòng thử lại.');
-    } finally {
-      setTimeout(() => setIsDownloading(false), 500);
+    if (!unlocked) return;
+    if (badge.onExport) {
+       badge.onExport(badge.id); // Trigger export modal
     }
   };
 
@@ -514,67 +493,8 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
   const userName = user?.name || "Học Giả";
 
   return (
-    <>
-      {/* Khung ẩn chuyên dụng để render ảnh export - Không dùng cho UI hiển thị */}
-      <div className="absolute top-[200vh] left-[200vw] z-[-9999] pointer-events-none">
-        <div 
-          ref={captureRef}
-          className="w-[450px] h-[600px] p-8 flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-zinc-900 to-black rounded-3xl border-4 border-zinc-800 shadow-2xl relative overflow-hidden"
-          style={{ fontFamily: 'sans-serif' }}
-        >
-          {/* Background effects */}
-          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-transparent pointer-events-none"></div>
-          {badge.isVip && <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-transparent to-purple-500/20 pointer-events-none"></div>}
-          
-          {/* Header */}
-          <div className="text-center relative z-10 w-full mb-2">
-            <h2 className="text-orange-500 font-black tracking-widest uppercase text-xl md:text-2xl mb-1 shadow-black drop-shadow-md">
-              CHỨNG NHẬN THÀNH TỰU
-            </h2>
-            <p className="text-zinc-300 font-bold text-lg">
-              Vinh danh <span className="text-white bg-white/10 px-3 py-1 rounded-lg ml-1">{userName}</span>
-            </p>
-          </div>
-
-          {/* Card Mockup */}
-          <div className={cn("relative z-10 w-full p-6 flex flex-col gap-4 rounded-2xl border-2 shadow-2xl bg-black/50 backdrop-blur-md", badge.border)}>
-            <div className={cn("absolute inset-0 opacity-20 pointer-events-none rounded-2xl", badge.gradient)}></div>
-            
-            <div className="flex items-center justify-between relative z-10">
-              <div className={cn("p-4 rounded-2xl shadow-sm border", badge.bg, badge.border)}>
-                  <Icon className={cn("w-10 h-10", badge.color)} />
-              </div>
-              {badge.isVip ? <Sparkles className="w-8 h-8 text-orange-500" /> : <CheckCircle2 className="w-8 h-8 text-emerald-500" />}
-            </div>
-
-            <div className="space-y-2 mt-4 relative z-10">
-                <h4 className="font-black tracking-tight text-2xl text-white">
-                    {badge.name}
-                </h4>
-                <div className="flex flex-col gap-2 bg-white/5 p-3 rounded-xl border border-white/10">
-                    <span className={cn("text-sm font-semibold", badge.isVip ? "text-orange-400 font-bold" : badge.colorStr || "text-zinc-300")}>
-                      {badge.desc}
-                    </span>
-                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest pt-1 border-t border-white/10">
-                      Đã Đạt Được: {val}/{badge.req}
-                    </span>
-                </div>
-                {badge.reward && (
-                  <div className="text-xs text-orange-300/80 italic mt-2">
-                    Đặc quyền: {badge.reward}
-                  </div>
-                )}
-            </div>
-          </div>
-
-          <div className="relative z-10 text-center w-full mt-4">
-            <p className="text-zinc-600 font-black tracking-[0.2em] text-[10px]">COSTUDY HENOSIS • {(new Date()).toLocaleDateString('vi-VN')}</p>
-          </div>
-        </div>
-      </div>
-
-      <motion.div 
-        variants={itemVariants}
+    <motion.div 
+      variants={itemVariants}
       className={cn("group w-full h-full relative cursor-pointer [perspective:1000px]", badge.span)}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -711,9 +631,10 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
          </div>
       </motion.div>
     </motion.div>
-    </>
   )
 }
+
+import { AchievementCard } from './AchievementCardExport';
 
 export const StudentBadges = ({ 
   points = 0, 
@@ -732,6 +653,7 @@ export const StudentBadges = ({
   const unlockedIdsRef = useRef<string[]>([]);
   const [unlockedIdsStore, setUnlockedIdsStore] = useState<string[]>([]);
   const [newlyUnlocked, setNewlyUnlocked] = useState<typeof BADGES[0] | null>(null);
+  const [showExportView, setShowExportView] = useState(false);
   const isFirstRender = useRef(true);
 
   const getValForBadge = (b: typeof BADGES[0]) => {
@@ -894,7 +816,7 @@ export const StudentBadges = ({
                return (
                   <BadgeCard 
                      key={badge.id}
-                     badge={badge}
+                     badge={{...badge, onExport: () => setShowExportView(true)}}
                      val={val}
                      unlocked={unlocked}
                      progress={progress}
@@ -903,6 +825,16 @@ export const StudentBadges = ({
             })}
          </motion.div>
       </AnimatePresence>
+
+      {/* Export / Carousel View */}
+      {showExportView && (
+         <AchievementCard
+            points={points}
+            streak={streak}
+            unlockedBadges={BADGES.filter(b => getValForBadge(b) >= b.req)}
+            onClose={() => setShowExportView(false)}
+         />
+      )}
 
       {/* modal celebrating newly unlocked badge */}
       {newlyUnlocked && (

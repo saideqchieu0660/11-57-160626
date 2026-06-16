@@ -4,7 +4,7 @@ import { useTheme } from './ThemeProvider';
 
 export const AudioVisualizer = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { isEcoMode } = useTheme();
+  const { isFixLagEnabled } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
