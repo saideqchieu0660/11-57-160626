@@ -508,14 +508,14 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
          {/* FRONT FACE */}
          <div 
            className={cn(
-             "absolute top-0 left-0 w-full h-full p-4 lg:p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 backface-hidden overflow-hidden bg-white dark:bg-zinc-900 border-2",
+             "absolute top-0 left-0 w-full h-full p-4 lg:p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 backface-hidden [transform:rotateY(0deg)] bg-white dark:bg-zinc-900 border-2",
              unlocked 
                ? `${badge.border} shadow-lg group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:scale-[1.02]`
                : "bg-zinc-200/50 dark:bg-zinc-800/80 border-zinc-300/30 dark:border-zinc-700/50 grayscale opacity-85 group-hover:grayscale-[0.4] group-hover:opacity-100 group-hover:-translate-y-1" 
            )}
          >
               {unlocked && (
-                 <div className={cn("absolute inset-0 bg-gradient-to-br opacity-10 dark:opacity-20 pointer-events-none", badge.gradient)} />
+                 <div className={cn("absolute inset-0 bg-gradient-to-br opacity-10 dark:opacity-20 pointer-events-none rounded-2xl", badge.gradient)} />
               )}
               
               {unlocked && badge.isVip && (
@@ -575,13 +575,13 @@ const BadgeCard = ({ badge, val, unlocked, progress }: any) => {
 
          {/* BACK FACE */}
          <div className={cn(
-             "absolute top-0 left-0 w-full h-full p-4 lg:p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 backface-hidden [transform:rotateY(180deg)] overflow-hidden",
+             "absolute top-0 left-0 w-full h-full p-4 lg:p-6 flex flex-col justify-between rounded-2xl transition-all duration-500 backface-hidden [transform:rotateY(180deg)]",
              unlocked 
                ? `bg-zinc-900 dark:bg-black border-2 border-zinc-800`
                : "bg-zinc-800 dark:bg-zinc-900 border-2 border-zinc-700"
            )}
          >
-              <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-transparent z-0"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-transparent z-0 rounded-2xl"></div>
               
               <div className="relative z-10 flex flex-col h-full items-center text-center justify-between">
                  <div className="w-full">
@@ -713,13 +713,27 @@ export const StudentBadges = ({
         }
       `}</style>
       
-      {/* Top statistics section */}
+        {/* Top statistics section */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 border-b border-zinc-200/50 dark:border-zinc-800/80 pb-6">
          <div className="space-y-1">
-            <h3 className="text-2xl md:text-3xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-700 via-orange-500 to-orange-600 dark:from-orange-200 dark:via-orange-400 dark:to-orange-500 flex items-center gap-3">
-              <Award className="w-8 h-8 text-orange-500" /> Điện Thờ Vinh Hiển
-            </h3>
+            <div className="flex items-center gap-4">
+              <h3 className="text-2xl md:text-3xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-700 via-orange-500 to-orange-600 dark:from-orange-200 dark:via-orange-400 dark:to-orange-500 flex items-center gap-3">
+                <Award className="w-8 h-8 text-orange-500" /> Điện Thờ Vinh Hiển
+              </h3>
+              <button 
+                onClick={() => setShowExportView(true)}
+                className="hidden sm:flex px-4 py-1.5 rounded-full text-xs font-bold border border-orange-500/30 text-orange-600 dark:text-orange-400 hover:bg-orange-500/10 transition-colors shadow-sm items-center gap-2"
+              >
+                 <Download className="w-3.5 h-3.5" /> Thẻ Vinh Danh
+              </button>
+            </div>
             <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 italic">Mỗi danh hiệu đạt được chứng minh nỗ lực tri thức phi thường.</p>
+            <button 
+                onClick={() => setShowExportView(true)}
+                className="sm:hidden mt-2 px-4 py-1.5 rounded-full text-xs font-bold border border-orange-500/30 text-orange-600 dark:text-orange-400 hover:bg-orange-500/10 transition-colors shadow-sm flex inline-flex items-center gap-2"
+              >
+                 <Download className="w-3.5 h-3.5" /> Thẻ Vinh Danh
+            </button>
          </div>
 
          {/* Live stat grid */}

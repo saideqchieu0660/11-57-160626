@@ -1380,18 +1380,21 @@ app.post("/api/proxy/openrouter", async (req, res, next) => {
         prompt = `Phân tích từ vựng tiếng Anh "${term}" (Định nghĩa: ${definition}). 
 YÊU CẦU QUAN TRỌNG NHẤT:
 1. ĐI THẲNG VÀO NỘI DUNG, TUYỆT ĐỐI KHÔNG xài lời chào hỏi xã giao (như "Chào bạn", "Đây là...").
-2. Giải thích CỰC KỲ NGẮN GỌN, độ dài khoảng tối đa 100 chữ.
-3. BẮT BUỘC kết thúc bằng 1 câu hỏi gợi mở để giúp học sinh mở rộng và phát triển kiến thức liên quan đến từ/cụm từ này.
+2. Giải thích chi tiết, độ dài khoảng tối đa 250 chữ.
+3. BẮT BUỘC cung cấp phiên âm IPA chuẩn.
+4. Nếu đây là thành ngữ, cụm động từ hoặc từ có nguồn gốc thú vị, BẮT BUỘC giải thích ngắn gọn nguồn gốc của nó để dễ học dễ nhớ.
+5. BẮT BUỘC kết thúc bằng 1 câu hỏi gợi mở để giúp học sinh mở rộng và phát triển kiến thức liên quan đến từ/cụm từ này.
 Cấu trúc yêu cầu (có dùng emoji cho sinh động): 
-- Ý nghĩa & Phiên âm.
-- 1 Ví dụ minh hoạ thực tế.
+- Ý nghĩa & Phiên âm IPA.
+- Nguồn gốc hoặc mẹo ghi nhớ (nếu có).
+- 1-2 Ví dụ minh hoạ thực tế.
 - Câu hỏi gợi mở.
 Chỉ trả ra nội dung phân tích (markdown).`;
       } else {
         prompt = `Phân tích khái niệm "${term}" (Định nghĩa: ${definition}).
 YÊU CẦU QUAN TRỌNG NHẤT:
 1. ĐI THẲNG VÀO NỘI DUNG, TUYỆT ĐỐI KHÔNG có lời chào hỏi xã giao hay câu mào đầu.
-2. Dài khoảng tối đa 100 chữ, giải thích bản chất cốt lõi cực kỳ súc tích, dễ hiểu.
+2. Dài khoảng tối đa 250 chữ, giải thích bản chất cốt lõi mở rộng cực kỳ dễ hiểu.
 3. BẮT BUỘC kết thúc bằng 1 câu hỏi gợi mở liên quan đến ứng dụng hoặc tính chất cốt lõi để thúc đẩy học sinh tự suy nghĩ và phát triển kiến thức.
 Bọc công thức Toán/Lý/Hóa bằng LaTeX (dấu $ hoặc $$). Chỉ trả ra nội dung (markdown).`;
       }
@@ -1881,8 +1884,24 @@ KHÔNG sử dụng Markdown code block. TRẢ VỀ ĐÚNG MỘT OBJECT JSON DUY 
   // Agent 3: Socratic & Context-Aware Assistant
   app.post("/api/agent3/chat", aiCooldownMiddleware, async (req, res, next) => {
     try {
-      const { message, history, context, mode, mcqData, difficulty, sessionId, responseMode, responseStyle, isConciseMode, category_context, questionCount } = req.body;
+      const { message, history, context, mode, mcqData, difficulty, sessionId, category_context, questionCount } = req.body;
       
+      const originalResponseMode = req.body.responseMode;
+      const responseLength = req.body.responseLength;
+
+      let responseMode = originalResponseMode;
+      let responseStyle = req.body.responseStyle || responseLength || "concise";
+
+      if (originalResponseMode === "debate") {
+          responseStyle = "debate";
+          responseMode = "direct"; 
+      }
+      if (responseStyle === "super_detailed") {
+          responseStyle = "detailed";
+      }
+
+      const isConciseMode = req.body.isConciseMode || responseStyle === "concise";
+
       let styleGuidance = "";
       if (responseStyle === "detailed") {
         styleGuidance = `\nPHONG CÁCH TRẢ LỜI - GIẢI THÍCH CHI TIẾT (DETAILED MODE):
@@ -1907,6 +1926,8 @@ KHÔNG sử dụng Markdown code block. TRẢ VỀ ĐÚNG MỘT OBJECT JSON DUY 
         conciseModeGuidance = `\nCHẾ ĐỘ TRẢ LỜI NGẮN (CONCISE MODE) ĐANG BẬT:
 - Chỉ trả lời thẳng vào vấn đề, bỏ qua hoàn toàn các lời chào hỏi dẫn dắt, giải thích vòng vo hay hỏi ngược lại dài dòng. Trả lời cực kỳ ngắn gọn (chỉ 1-2 câu) và trực tiếp.`;
       }
+
+      const englishGuidance = `\nĐẶC TÍNH NGÔN NGỮ ANH (NẾU CÓ): NẾU mày phải giải thích, định nghĩa về bất kỳ từ vựng tiếng Anh (từ lóng, thành ngữ, cụm động từ, thuật ngữ, v.v.), mày BẮT BUỘC phải đính kèm phiên âm IPA chuẩn xác cạnh từ vựng đó. Nếu đó là thành ngữ (idioms) hoặc cụm động từ/từ có gốc đặc biệt, BẮT BUỘC giải thích ngắn gọn nguồn gốc hoặc cách thức cấu tạo của nó để người học có thể hình dung và nhớ lâu hơn.`;
 
       let systemPrompt = "";
       if (responseMode === "direct") {
@@ -1955,6 +1976,8 @@ ${responseStyle === "detailed" ? "3. BẮT BUỘC GIẢI THÍCH CHI TIẾT: Tao 
 ${styleGuidance}
 ${conciseModeGuidance}`;
       }
+
+      systemPrompt += englishGuidance;
 
       if (mode === "quiz") {
           const diffLevel = difficulty || "medium";
